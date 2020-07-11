@@ -1,7 +1,6 @@
 ﻿using System;
 using GCDCalculator;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Diagnostics;
 
 namespace UnitTests
 {

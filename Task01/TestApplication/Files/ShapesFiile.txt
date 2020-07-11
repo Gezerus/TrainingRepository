@@ -1,0 +1,6 @@
+﻿Triangle 10 12 11
+Rectangle 25 30
+Circle 30
+Rectangle 10,5 20,5 
+Circle 50
+Circle 30
