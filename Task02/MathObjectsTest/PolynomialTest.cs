@@ -84,11 +84,11 @@ namespace MathObjectsTest
         {
             //arrange
             var polynomial1 = new Polynomial(2, 3, 4);
-            var polynomial2 = new Polynomial(10, 0, 3);
+            var polynomial2 = new Polynomial(4, 2);
             //act
-            var result = vector1 * vector2;
+            var result = polynomial1 * polynomial2;
             //assert
-            Assert.AreEqual(result, new Vector(9, 25, -30));
+            Assert.AreEqual(result, new Polynomial(8, 16, 22, 8));
         }
     }
 }
