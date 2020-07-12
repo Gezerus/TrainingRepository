@@ -87,6 +87,11 @@ namespace MathObjects
             return new Vector(number * vector.X, number * vector.Y, number * vector.Z);
         }
 
+        public static Vector operator * (double number, Vector vector)
+        {
+            return vector * number;
+        }
+
         public static Vector operator / (Vector vector, double number)
         {
             return vector * (1 / number);

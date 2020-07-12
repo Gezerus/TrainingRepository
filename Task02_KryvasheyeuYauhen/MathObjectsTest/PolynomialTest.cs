@@ -16,14 +16,16 @@ namespace MathObjectsTest
         {
             //arrange
             var polynomial1 = new Polynomial(1, 2, 3, 4, 5);
-            var polynomial2 = new Polynomial(0, 2, 0, 4, 0);
+            var polynomial2 = new Polynomial(1, 0, 0, 0, 0);
             var polynomial3 = new Polynomial(1);
-            var polynomial4 = new Polynomial(0);
+            var polynomial4 = new Polynomial(0, 0, 0, 0, 5);
+            var polynomial5 = new Polynomial(0, 0, 0, 0, 0);
             //act and assert
             Assert.AreEqual(polynomial1.ToString(), "[5x^4 + 4x^3 + 3x^2 + 2x^1 + 1x^0]");
-            Assert.AreEqual(polynomial2.ToString(), "[0x^4 + 4x^3 + 0x^2 + 2x^1 + 0x^0]");
+            Assert.AreEqual(polynomial2.ToString(), "[1x^0]");
             Assert.AreEqual(polynomial3.ToString(), "[1x^0]");
-            Assert.AreEqual(polynomial4.ToString(), "[0x^0]");
+            Assert.AreEqual(polynomial4.ToString(), "[5x^4 + 0x^3 + 0x^2 + 0x^1 + 0x^0]");
+            Assert.AreEqual(polynomial5.ToString(), "[0x^0]");
         }
 
         [TestMethod]
@@ -89,6 +91,57 @@ namespace MathObjectsTest
             var result = polynomial1 * polynomial2;
             //assert
             Assert.AreEqual(result, new Polynomial(8, 16, 22, 8));
+        }
+
+        [TestMethod]
+        public void MultiplyPolinomialByNumber_ShouldMultiplyCorrectly()
+        {
+            //arrange
+            var polynomial = new Polynomial(5, 3, 4);
+            //act
+            var result1 = polynomial * 2;
+            var result2 = 2 * polynomial;
+            //assert
+            Assert.AreEqual(result1, new Polynomial(10, 6, 8));
+            Assert.AreEqual(result2, new Polynomial(10, 6, 8));
+        }
+
+        [TestMethod]
+        public void DivisionWithRemainder_WhenCorrectPolynomialProvided_ShouldCalculeteCorrectly()
+        {
+            //arrange
+            var polynomial1 = new Polynomial(1, -8, 5, -1, 2);
+            var polynomial2 = new Polynomial(1, -1, 1);
+            //act
+            Polynomial remainder; 
+            var result = Polynomial.DivisionWithRemainder(polynomial1 , polynomial2, out remainder);
+            //assert
+            Assert.AreEqual(result, new Polynomial(4, 1, 2));
+            Assert.AreEqual(remainder, new Polynomial(-3, -5));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void DivisionWithRemainder_WhenDividerGreaterThanDividendProvided_ShouldThrowExeption()
+        {
+            //arrange
+            var polynomial1 = new Polynomial(1, -8, 5, -1, 2);
+            var polynomial2 = new Polynomial(1, -1, 1, 3, 4, 5);
+            //act
+            Polynomial remainder;
+            var result = Polynomial.DivisionWithRemainder(polynomial1, polynomial2, out remainder);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DivideByZeroException))]
+        public void DivisionWithRemainder_WhenDividerIsZeroProvided_ShouldThrowExeption()
+        {
+            //arrange
+            var polynomial1 = new Polynomial(1, -8, 5, -1, 2);
+            var polynomial2 = new Polynomial(0);
+            //act
+            Polynomial remainder;
+            var result = Polynomial.DivisionWithRemainder(polynomial1, polynomial2, out remainder);
         }
     }
 }

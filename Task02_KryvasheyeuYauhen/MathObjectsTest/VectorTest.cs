@@ -85,11 +85,13 @@ namespace MathObjectsTest
         public void MultiplyVectorByNumber_ShouldMultiplyCorrectly()
         {
             //arrange
-            var vector1 = new Vector(5, 3, 4);            
+            var vector = new Vector(5, 3, 4);            
             //act
-            var result = vector1 * 2;
+            var result1 = vector * 2;
+            var result2 = 2 * vector;
             //assert
-            Assert.AreEqual(result, new Vector(10, 6, 8));
+            Assert.AreEqual(result1, new Vector(10, 6, 8));
+            Assert.AreEqual(result2, new Vector(10, 6, 8));
         }
 
         [TestMethod]
