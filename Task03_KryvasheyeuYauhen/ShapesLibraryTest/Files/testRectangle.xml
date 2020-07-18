@@ -1,0 +1,9 @@
+﻿<filmrectangle>
+  <height>10</height>
+  <width>5</width>
+</filmrectangle>
+<paperrectangle>
+  <height>200</height>
+  <width>150</width>
+  <color>White</color>
+</paperrectangle>

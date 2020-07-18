@@ -2,9 +2,11 @@
 using ShapesLibrary;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ShapesLibraryTest
 {
@@ -100,6 +102,77 @@ namespace ShapesLibraryTest
             Circle circle = new FilmCircle(1);
             //act and assert
             Assert.AreEqual(circle.GetPerimeter(), 2 * Math.PI);
+        }
+
+        [TestMethod]
+        public void WriteXml_ShouldWriteCircleToFileCorrectly()
+        {
+            //arrange
+            Shape testCircle1 = new FilmCircle(10);
+            Shape testCircle2 = new PaperCircle(200);
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.ConformanceLevel = ConformanceLevel.Auto;
+            //act
+            using(XmlWriter writer = XmlWriter.Create(@"..\..\Files\testCircle.xml", settings))
+            {
+                testCircle1.WriteXml(writer);
+                testCircle2.WriteXml(writer);
+            }
+        }
+
+        [TestMethod]
+        public void ReadXml_ShouldReadCircleFromFileCorrectly()
+        {
+            //arrange
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.IgnoreWhitespace = true;
+            settings.ConformanceLevel = ConformanceLevel.Auto;
+            Shape circle1;
+            Shape circle2;
+            //act
+            using (XmlReader reader = XmlReader.Create(@"..\..\Files\testCircle.xml", settings))
+            {
+                circle1 = new FilmCircle(reader);
+                circle2 = new PaperCircle(reader);
+            }
+            //assert
+            Assert.AreEqual(circle1, new FilmCircle(10));
+            Assert.AreEqual(circle2, new PaperCircle(200));
+        }
+
+        [TestMethod]
+        public void WriteXml_WhenUseStreamWriter_ShouldWriteCircleToFileCorrectly()
+        {
+            //arrange
+            Shape testCircle1 = new FilmCircle(10);
+            Shape testCircle2 = new PaperCircle(200);
+            //act
+            using (StreamWriter writer = new StreamWriter(@"..\..\Files\testCircleStreamReader.xml",false, Encoding.UTF8))
+            {
+                testCircle1.WriteXml(writer);
+                testCircle2.WriteXml(writer);
+            }
+        }
+
+        [TestMethod]
+        public void ReadXml_WhenUseStreamReader_ShouldReadCircleFromFileCorrectly()
+        {
+            //arrange
+            Shape circle1;
+            Shape circle2;
+            //act
+            using (StreamReader reader = new StreamReader(@"..\..\Files\testCircleStreamReader.xml", Encoding.UTF8))
+            {
+                reader.ReadLine();
+                circle1 = new FilmCircle(reader);
+                reader.ReadLine();
+                circle2 = new PaperCircle(reader);
+            }
+            //assert
+            Assert.AreEqual(circle1, new FilmCircle(10));
+            Assert.AreEqual(circle2, new PaperCircle(200));
         }
     }
 }

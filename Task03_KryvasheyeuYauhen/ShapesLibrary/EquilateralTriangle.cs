@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ShapesLibrary
 {
@@ -52,6 +54,20 @@ namespace ShapesLibrary
         }
 
         /// <summary>
+        /// initializes the triangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public EquilateralTriangle(XmlReader reader) : base(reader)
+        {        }
+
+        /// <summary>
+        /// initializes the triangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public EquilateralTriangle(StreamReader reader) : base(reader)
+        {        }
+
+        /// <summary>
         /// Calculates the area of ​​the triangle
         /// </summary>
         /// <returns></returns>
@@ -82,7 +98,44 @@ namespace ShapesLibrary
         public override int GetHashCode()
         {
             return this.ToString().GetHashCode();
-        }        
+        }
+
+        /// <summary>
+        /// initializes the triangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            reader.ReadStartElement();
+            _side = reader.ReadElementContentAsInt("side", "");
+        }
+
+        /// <summary>
+        /// Writes the triangle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteElementString("side", Side.ToString());
+        }
+
+        /// <summary>
+        /// initializes the triangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {
+            _side = double.Parse(reader.ReadLine().Trim(new char[] { ' ', '<', '>', '/', 's', 'i', 'd', 'e' }));
+        }
+
+        /// <summary>
+        /// Writes the triangle to Xml file using streamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.WriteLine("    <side>{0}</side>", Side);
+        }
     }
 
     /// <summary>
@@ -117,6 +170,20 @@ namespace ShapesLibrary
         }
 
         /// <summary>
+        /// initializes the paper triangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public PaperEquilateralTriangle(XmlReader reader) : base(reader)
+        {        }
+
+        /// <summary>
+        /// initializes the paper triangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public PaperEquilateralTriangle(StreamReader reader) : base(reader)
+        {        }
+
+        /// <summary>
         /// Paint the triangle
         /// </summary>
         /// <param name="color"></param>
@@ -132,6 +199,54 @@ namespace ShapesLibrary
         public override string ToString()
         {
             return "[Paper" + base.ToString() + string.Format("; Color = {0}]", Color);
+        }
+
+        /// <summary>
+        /// initializes the paper triangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            _color = (Colors)Enum.Parse(typeof(Colors), reader.ReadElementContentAsString("color", ""), true);
+            reader.ReadEndElement();
+        }
+
+
+        /// <summary>
+        /// Writes the paper triangle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("paperequilateraltriangle");
+            base.WriteXml(writer);
+            writer.WriteElementString("color", Color.ToString());
+            writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// initializes the paper triangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {
+            base.ReadXml(reader);
+            _color = (Colors)Enum.Parse(typeof(Colors), reader.ReadLine().Trim(new char[] { ' ', '<', '>', '/', 'c', 'o', 'l', 'o', 'r' }), true);
+            reader.ReadLine();
+        }
+
+
+        /// <summary>
+        /// Writes the paper triangle to Xml file using StreamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.WriteLine("  <paperequilateraltriangle>");
+            base.WriteXml(writer);
+            writer.WriteLine("    <color>{0}</color>", Color);
+            writer.WriteLine("  </paperequilateraltriangle>");
         }
     }
 
@@ -155,9 +270,67 @@ namespace ShapesLibrary
         public FilmEquilateralTriangle(double side, Shape shape) : base(side, shape)
         {        }
 
+        /// <summary>
+        /// initializes the film triangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public FilmEquilateralTriangle(XmlReader reader) : base(reader)
+        {        }
+
+        /// <summary>
+        /// initializes the film triangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public FilmEquilateralTriangle(StreamReader reader) : base(reader)
+        {        }
+
         public override string ToString()
         {
             return "[Film" + base.ToString() + "]";
+        }
+
+        /// <summary>
+        /// initializes the film triangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            reader.ReadEndElement();
+        }
+
+
+        /// <summary>
+        /// Writes the film triangle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("filmequilateraltriangle");
+            base.WriteXml(writer);
+            writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// initializes the film triangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {
+            base.ReadXml(reader);
+            reader.ReadLine();
+        }
+
+
+        /// <summary>
+        /// Writes the film triangle to Xml file using StreamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.WriteLine("  <filmequilateraltriangle>");
+            base.WriteXml(writer);
+            writer.WriteLine("  </filmequilateraltriangle>");
         }
     }
 }

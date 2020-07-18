@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Shapes>
+  <filmcircle>
+    <radius>10</radius>
+  </filmcircle>
+  <papercircle>
+    <radius>20</radius>
+    <color>White</color>
+  </papercircle>
+  <filmequilateraltriangle>
+    <side>5</side>
+  </filmequilateraltriangle>
+  <paperequilateraltriangle>
+    <side>7</side>
+    <color>Green</color>
+  </paperequilateraltriangle>
+  <filmrectangle>
+    <height>10</height>
+    <width>20</width>
+  </filmrectangle>
+  <paperrectangle>
+    <height>20</height>
+    <width>10</width>
+    <color>Yellow</color>
+  </paperrectangle>
+</Shapes>

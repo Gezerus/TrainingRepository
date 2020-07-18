@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Text;
+using System.Xml;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ShapesLibrary;
 
@@ -131,6 +134,78 @@ namespace ShapesLibraryTest
             Rectangle rectangle = new FilmRectangle(10, 2);
             //act and assert
             Assert.AreEqual(rectangle.GetPerimeter(), 24);
+        }
+
+        [TestMethod]
+        public void WriteXml_ShouldWriteRectangleToFileCorrectly()
+        {
+            //arrange
+            Shape testrectangle1 = new FilmRectangle(10, 5);
+            Shape testrectangle2 = new PaperRectangle(200, 150);
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.ConformanceLevel = ConformanceLevel.Auto;
+            //act
+            using (XmlWriter writer = XmlWriter.Create(@"..\..\Files\testRectangle.xml", settings))
+            {
+                testrectangle1.WriteXml(writer);
+                testrectangle2.WriteXml(writer);
+            }
+        }
+
+        [TestMethod]
+        public void ReadXml_ShouldReadCircleFromFileCorrectly()
+        {
+            //arrange
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.IgnoreWhitespace = true;
+            settings.ConformanceLevel = ConformanceLevel.Auto;
+            Shape rectangle1;
+            Shape rectangle2;
+            //act
+            using (XmlReader reader = XmlReader.Create(@"..\..\Files\testRectangle.xml", settings))
+            {
+                rectangle1 = new FilmRectangle(reader);
+                rectangle2 = new PaperRectangle(reader);
+            }
+            //assert
+            Assert.AreEqual(rectangle1, new FilmRectangle(10, 5));
+            Assert.AreEqual(rectangle2, new PaperRectangle(200, 150));
+        }
+
+        [TestMethod]
+        public void WriteXml_WhenUseStreamWriter_ShouldWriteRectangleToFileCorrectly()
+        {
+            //arrange
+            Shape testrectangle1 = new FilmRectangle(10, 5);
+            Shape testrectangle2 = new PaperRectangle(200, 150);
+
+            //act
+            using (StreamWriter writer = new StreamWriter(@"..\..\Files\testRectangleStreamReader.xml", false, Encoding.UTF8))
+            {
+                testrectangle1.WriteXml(writer);
+                testrectangle2.WriteXml(writer);
+            }
+        }
+
+        [TestMethod]
+        public void ReadXml_WhenUseStreamReader_ShouldReadCircleFromFileCorrectly()
+        {
+            //arrange
+            Shape rectangle1;
+            Shape rectangle2;
+            //act
+            using (StreamReader reader = new StreamReader(@"..\..\Files\testRectangleStreamReader.xml", Encoding.UTF8))
+            {
+                reader.ReadLine();
+                rectangle1 = new FilmRectangle(reader);
+                reader.ReadLine();
+                rectangle2 = new PaperRectangle(reader);
+            }
+            //assert
+            Assert.AreEqual(rectangle1, new FilmRectangle(10, 5));
+            Assert.AreEqual(rectangle2, new PaperRectangle(200, 150));
         }
     }
 }

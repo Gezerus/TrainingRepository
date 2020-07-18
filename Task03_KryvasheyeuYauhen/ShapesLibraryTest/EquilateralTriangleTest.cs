@@ -2,9 +2,11 @@
 using ShapesLibrary;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ShapesLibraryTest
 {
@@ -100,6 +102,77 @@ namespace ShapesLibraryTest
             EquilateralTriangle triangle = new FilmEquilateralTriangle(10);
             //act and assert
             Assert.AreEqual(triangle.GetPerimeter(), 30);
+        }
+
+        [TestMethod]
+        public void WriteXml_ShouldWriteTriangleToFileCorrectly()
+        {
+            //arrange
+            Shape triangle1 = new FilmEquilateralTriangle(10);
+            Shape triangle2 = new PaperEquilateralTriangle(200);
+
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
+            settings.ConformanceLevel = ConformanceLevel.Auto;
+            //act
+            using (XmlWriter writer = XmlWriter.Create(@"..\..\Files\testTriangle.xml", settings))
+            {
+                triangle1.WriteXml(writer);
+                triangle2.WriteXml(writer);
+            }
+        }
+
+        [TestMethod]
+        public void ReadXml_ShouldReadTriangleFromFileCorrectly()
+        {
+            //arrange
+            XmlReaderSettings settings = new XmlReaderSettings();
+            settings.IgnoreWhitespace = true;
+            settings.ConformanceLevel = ConformanceLevel.Auto;
+            Shape triangle1;
+            Shape triangle2;
+            //act
+            using (XmlReader reader = XmlReader.Create(@"..\..\Files\testTriangle.xml", settings))
+            {
+                triangle1 = new FilmEquilateralTriangle(reader);
+                triangle2 = new PaperEquilateralTriangle(reader);
+            }
+            //assert
+            Assert.AreEqual(triangle1, new FilmEquilateralTriangle(10));
+            Assert.AreEqual(triangle2, new PaperEquilateralTriangle(200));
+        }
+
+        [TestMethod]
+        public void WriteXml_WhenUseStreamWriter_ShouldWriteTriangleToFileCorrectly()
+        {
+            //arrange
+            Shape triangle1 = new FilmEquilateralTriangle(10);
+            Shape triangle2 = new PaperEquilateralTriangle(200);
+            //act
+            using (StreamWriter writer = new StreamWriter(@"..\..\Files\testTriangleStreamReader.xml", false, Encoding.UTF8))
+            {
+                triangle1.WriteXml(writer);
+                triangle2.WriteXml(writer);
+            }
+        }
+
+        [TestMethod]
+        public void ReadXml_WhenUseStreamReader_ShouldReadTriangleFromFileCorrectly()
+        {
+            //arrange
+            Shape triangle1;
+            Shape triangle2;
+            //act
+            using (StreamReader reader = new StreamReader(@"..\..\Files\testTriangleStreamReader.xml", Encoding.UTF8))
+            {
+                reader.ReadLine();
+                triangle1 = new FilmEquilateralTriangle(reader);
+                reader.ReadLine();
+                triangle2 = new PaperEquilateralTriangle(reader);
+            }
+            //assert
+            Assert.AreEqual(triangle1, new FilmEquilateralTriangle(10));
+            Assert.AreEqual(triangle2, new PaperEquilateralTriangle(200));
         }
     }
 }

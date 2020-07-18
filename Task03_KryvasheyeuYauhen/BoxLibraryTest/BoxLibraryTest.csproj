@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoxTest.cs" />
@@ -60,6 +61,13 @@
       <Project>{C9948007-E383-45EC-A268-EBAC6A0BF24C}</Project>
       <Name>BoxLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShapesLibrary\ShapesLibrary.csproj">
+      <Project>{280EAA1E-0DCD-4DBF-AC9A-7EC9673AC0FA}</Project>
+      <Name>ShapesLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Files\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

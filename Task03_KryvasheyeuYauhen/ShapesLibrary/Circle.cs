@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ShapesLibrary
 {
@@ -25,7 +27,7 @@ namespace ShapesLibrary
         /// Initializes the circle
         /// </summary>
         /// <param name="radius"></param>
-        protected Circle(double radius)
+        protected Circle(double radius) 
         {
             if (radius <= 0)
                 throw new ArgumentOutOfRangeException("The radius should be greater than zero");
@@ -42,6 +44,20 @@ namespace ShapesLibrary
             if (shape.GetArea() <= Math.PI * (radius * radius))
                 throw new ArgumentException("the shape to be cut out should be smaller than the shape from which it is cut");
         }
+
+        /// <summary>
+        /// initializes the circle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public Circle(XmlReader reader) : base(reader)
+        {        }
+
+        /// <summary>
+        /// initializes the circle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public Circle(StreamReader reader) : base(reader)
+        {        }
 
         /// <summary>
         /// Calculates the area of the circle
@@ -75,6 +91,46 @@ namespace ShapesLibrary
         {
             return this.ToString().GetHashCode();
         }
+
+        /// <summary>
+        /// initializes the circle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            reader.ReadStartElement();
+            _radius = reader.ReadElementContentAsInt("radius", ""); 
+        }
+
+        /// <summary>
+        /// Writes the circle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteElementString("radius", Radius.ToString());
+        }
+
+        /// <summary>
+        /// initializes the circle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {    
+            _radius = double.Parse(reader.ReadLine().Trim(new char[] { ' ', '<', '>', '/', 'r', 'a', 'd', 'i', 'u','s' }));
+        }
+
+        /// <summary>
+        /// Writes the circle to Xml file using streamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.Write("    <radius>");
+            writer.Write(Radius);
+            writer.WriteLine("</radius>");            
+        }
+
     }
 
     /// <summary>
@@ -109,6 +165,21 @@ namespace ShapesLibrary
         }
 
         /// <summary>
+        /// initializes the paper circle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public PaperCircle(XmlReader reader) : base(reader)
+        {        }
+
+
+        /// <summary>
+        /// initializes the paper circle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public PaperCircle(StreamReader reader) : base(reader)
+        {        }
+
+        /// <summary>
         /// Paint the circle
         /// </summary>
         /// <param name="color"></param>
@@ -124,6 +195,54 @@ namespace ShapesLibrary
         public override string ToString()
         {
             return "[Paper" + base.ToString() + string.Format("; Color = {0}]", Color);
+        }
+
+        /// <summary>
+        /// initializes the paper circle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            _color = (Colors)Enum.Parse(typeof(Colors), reader.ReadElementContentAsString("color", ""), true);
+            reader.ReadEndElement();
+        }
+
+
+        /// <summary>
+        /// Writes the paper circle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("papercircle");
+            base.WriteXml(writer);
+            writer.WriteElementString("color", Color.ToString());
+            writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// initializes the paper circle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {
+            base.ReadXml(reader);
+            _color = (Colors)Enum.Parse(typeof(Colors), reader.ReadLine().Trim(new char[] { ' ', '<', '>', '/', 'c', 'o', 'l', 'o', 'r' }),true);
+            reader.ReadLine();
+        }
+
+
+        /// <summary>
+        /// Writes the paper circle to Xml file using StreamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.WriteLine("  <papercircle>");
+            base.WriteXml(writer);
+            writer.WriteLine("    <color>{0}</color>", Color);
+            writer.WriteLine("  </papercircle>");
         }
     }
 
@@ -149,9 +268,67 @@ namespace ShapesLibrary
         {
         }
 
+        /// <summary>
+        /// initializes the film circle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public FilmCircle(XmlReader reader) : base(reader)
+        {        }
+
+        /// <summary>
+        /// initializes the film circle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public FilmCircle(StreamReader reader) : base(reader)
+        {        }
+
         public override string ToString()
         {
             return "[Film" + base.ToString() + "]";
+        }
+
+        /// <summary>
+        /// initializes the film circle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            reader.ReadEndElement();
+        }
+
+
+        /// <summary>
+        /// Writes the film circle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("filmcircle");
+            base.WriteXml(writer);
+            writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// initializes the film circle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {
+            base.ReadXml(reader);
+            reader.ReadLine();
+        }
+
+
+        /// <summary>
+        /// Writes the film circle to Xml file using StreamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.WriteLine("  <filmcircle>");
+            base.WriteXml(writer);
+            writer.WriteLine("  </filmcircle>");
         }
     }
 }

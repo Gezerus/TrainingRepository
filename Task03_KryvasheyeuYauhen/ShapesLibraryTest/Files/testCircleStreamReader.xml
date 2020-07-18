@@ -1,0 +1,7 @@
+﻿  <filmcircle>
+    <radius>10</radius>
+  </filmcircle>
+  <papercircle>
+    <radius>200</radius>
+    <color>White</color>
+  </papercircle>

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ShapesLibrary
 {
@@ -57,6 +59,22 @@ namespace ShapesLibrary
             if (shape.GetArea() <= height * width)
                 throw new ArgumentException("the shape to be cut out should be smaller than the shape from which it is cut");
         }
+
+        /// <summary>
+        /// initializes the rectangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public Rectangle(XmlReader reader) : base(reader)
+        {
+        }
+
+        /// <summary>
+        /// initializes the rectangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public Rectangle(StreamReader reader) : base(reader)
+        {        }
+
         /// <summary>
         /// Calculates the area of ​​the rectangle
         /// </summary>
@@ -87,6 +105,47 @@ namespace ShapesLibrary
         public override int GetHashCode()
         {
             return this.ToString().GetHashCode();
+        }
+
+        /// <summary>
+        /// initializes the rectangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            reader.ReadStartElement();
+            _height= reader.ReadElementContentAsInt("height", "");
+            _width = reader.ReadElementContentAsInt("width", "");
+        }
+
+        /// <summary>
+        /// Writes the rectangle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteElementString("height", Height.ToString());
+            writer.WriteElementString("width", Width.ToString());
+        }
+
+        /// <summary>
+        /// initializes the rectangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {
+            _height = double.Parse(reader.ReadLine().Trim(new char[] { ' ', '<', '>', '/', 'h', 'e', 'i', 'g', 'h', 't' }));
+            _width = double.Parse(reader.ReadLine().Trim(new char[] { ' ', '<', '>', '/', 'w', 'i', 'd', 't', 'h' }));
+        }
+
+        /// <summary>
+        /// Writes the circle to Xml file using streamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.WriteLine("    <height>{0}</height>", Height);
+            writer.WriteLine("    <width>{0}</width>", Width);
         }
     }
 
@@ -121,7 +180,22 @@ namespace ShapesLibrary
         {
             if (shape is IPaperShape)
                 _color = ((IPaperShape)shape).Color;
-        }        
+        }
+
+        /// <summary>
+        /// initializes the paper rectngle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public PaperRectangle(XmlReader reader) : base(reader)
+        {        }
+
+        /// <summary>
+        /// initializes the paper rectngle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public PaperRectangle(StreamReader reader) : base(reader)
+        {        }
+
         /// <summary>
         /// Paint the rectangle
         /// </summary>
@@ -138,6 +212,54 @@ namespace ShapesLibrary
         public override string ToString()
         {
             return "[Paper" + base.ToString() + string.Format("; Color = {0}]",Color);
+        }
+
+        /// <summary>
+        /// initializes the paper rectangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            _color = (Colors)Enum.Parse(typeof(Colors), reader.ReadElementContentAsString("color", ""), true);
+            reader.ReadEndElement();
+        }
+
+
+        /// <summary>
+        /// Writes the paper rectangle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("paperrectangle");
+            base.WriteXml(writer);
+            writer.WriteElementString("color", Color.ToString());
+            writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// initializes the paper rectangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {
+            base.ReadXml(reader);
+            _color = (Colors)Enum.Parse(typeof(Colors), reader.ReadLine().Trim(new char[] { ' ', '<', '>', '/', 'c', 'o', 'l', 'o', 'r' }), true);
+            reader.ReadLine();
+        }
+
+
+        /// <summary>
+        /// Writes the paper rectangle to Xml file using StreamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.WriteLine("  <paperrectangle>");
+            base.WriteXml(writer);
+            writer.WriteLine("    <color>{0}</color>", Color);
+            writer.WriteLine("  </paperrectangle>");
         }
     }
 
@@ -162,9 +284,67 @@ namespace ShapesLibrary
         /// <param name="shape"></param>
         public FilmRectangle(double height, double width, Shape shape) : base(height, width, shape)
         {        }
+
+        /// <summary>
+        /// initializes the film rectangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public FilmRectangle(XmlReader reader) : base(reader)
+        {        }
+
+        /// <summary>
+        /// initializes the film rectangle with data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public FilmRectangle(StreamReader reader) : base(reader)
+        {        }
+
         public override string ToString()
         {
             return "[Film" + base.ToString() + "]";
+        }
+
+        /// <summary>
+        /// initializes the film rectangle with data from XmlReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+            reader.ReadEndElement();
+        }
+
+        /// <summary>
+        /// Writes the film rectangle to Xml file using XmlWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("filmrectangle");
+            base.WriteXml(writer);
+            writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// initializes the film rectanglewith data from StreamReader
+        /// </summary>
+        /// <param name="reader"></param>
+        public override void ReadXml(StreamReader reader)
+        {
+            base.ReadXml(reader);
+            reader.ReadLine();
+        }
+
+
+        /// <summary>
+        /// Writes the film rectangle to Xml file using StreamWriter
+        /// </summary>
+        /// <param name="writer"></param>
+        public override void WriteXml(StreamWriter writer)
+        {
+            writer.WriteLine("  <filmrectangle>");
+            base.WriteXml(writer);
+            writer.WriteLine("  </filmrectangle>");
         }
     }
 
