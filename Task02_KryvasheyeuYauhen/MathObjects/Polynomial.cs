@@ -43,12 +43,27 @@ namespace MathObjects
 
         public override bool Equals(object obj)
         {
-            return obj.ToString() == this.ToString();
+            if (obj is Polynomial && obj != null)
+            {
+                Polynomial temp = (Polynomial)obj;
+                if (temp._coefficients.Length != this._coefficients.Length)
+                    return false;
+                for (int i = 0; i < this._coefficients.Length; i++)
+                    if (temp._coefficients[i] != this._coefficients[i])
+                        return false;
+                return true;
+            }
+            else
+                return false;
         }
 
         public override int GetHashCode()
         {
-            return this.ToString().GetHashCode();
+            int hash = 3;
+            foreach (double coef in _coefficients)
+                hash = hash * 7 + coef.GetHashCode();
+            return hash;
+
         }
 
         public static Polynomial operator + (Polynomial p1, Polynomial p2)

@@ -34,12 +34,25 @@ namespace MathObjects
 
         public override bool Equals(object obj)
         {
-            return obj.ToString() == this.ToString();
+            if(obj is Vector && obj != null)
+            {
+                Vector temp = (Vector)obj;
+                if (temp.X == this.X && temp.Y == this.Y && temp.Z == this.Z)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
         }
 
         public override int GetHashCode()
         {
-            return this.ToString().GetHashCode();
+            int hash = 17;
+            hash = hash * 23 + X.GetHashCode();
+            hash = hash * 23 + Y.GetHashCode();
+            hash = hash * 23 + Z.GetHashCode();
+
+            return hash;
         }
 
         public static bool operator == (Vector v1, Vector v2)
