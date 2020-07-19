@@ -220,7 +220,7 @@ namespace ShapesLibrary
         /// <param name="reader"></param>
         public override void ReadXml(XmlReader reader)
         {
-            base.ReadXml(reader);
+            base.ReadXml(reader);            
             _color = (Colors)Enum.Parse(typeof(Colors), reader.ReadElementContentAsString("color", ""), true);
             reader.ReadEndElement();
         }
@@ -244,7 +244,7 @@ namespace ShapesLibrary
         /// <param name="reader"></param>
         public override void ReadXml(StreamReader reader)
         {
-            base.ReadXml(reader);
+            base.ReadXml(reader);            
             _color = (Colors)Enum.Parse(typeof(Colors), reader.ReadLine().Trim(new char[] { ' ', '<', '>', '/', 'c', 'o', 'l', 'o', 'r' }), true);
             reader.ReadLine();
         }

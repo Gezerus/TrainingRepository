@@ -363,17 +363,21 @@ namespace BoxLibraryTest
                 new FilmRectangle(10, 20),
                 new PaperRectangle(20, 10)
                 };
+            ((IPaperShape)shapes[3]).Paint(Colors.Green);
+            ((IPaperShape)shapes[5]).Paint(Colors.Yellow);
 
             Box box = new Box();
 
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.IgnoreWhitespace = true;
-            settings.ConformanceLevel = ConformanceLevel.Auto;            
+            settings.ConformanceLevel = ConformanceLevel.Auto;
             //act
             using (XmlReader reader = XmlReader.Create(@"..\..\Files\testShapes.xml", settings))
             {
                 box.ReadXml(reader);
             }
+
+
             //assert
             for (int i = 0; i < box.Count(); i++)
                 Assert.AreEqual(shapes[i], box.Get(i));

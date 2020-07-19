@@ -255,9 +255,10 @@ namespace BoxLibrary
         /// <param name="reader"></param>
         public void ReadXml(XmlReader reader)
         {
-            bool isEmpty = reader.IsEmptyElement;            
-            if (isEmpty) return;
-            while(reader.NodeType == XmlNodeType.Element)
+            reader.Read();
+            reader.Read();
+            reader.Read();
+            while (reader.NodeType == XmlNodeType.Element)
             {
                 switch(reader.Name)
                 {
