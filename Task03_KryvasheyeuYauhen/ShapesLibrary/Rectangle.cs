@@ -99,12 +99,20 @@ namespace ShapesLibrary
         }
         public override bool Equals(object obj)
         {
-            return obj.ToString() == this.ToString();
+            if (obj is Rectangle && obj != null)
+            {
+                Rectangle temp = (Rectangle)obj;
+                if (temp.Height == this.Height && temp.Width == this.Width)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
         }
 
         public override int GetHashCode()
         {
-            return this.ToString().GetHashCode();
+            return (Height.GetHashCode() << 2) ^ Width.GetHashCode();
         }
 
         /// <summary>
@@ -214,6 +222,18 @@ namespace ShapesLibrary
             return "[Paper" + base.ToString() + string.Format("; Color = {0}]",Color);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj) && obj is PaperRectangle && ((PaperRectangle)obj).Color == this.Color)
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return (base.GetHashCode() << 2) ^ (int)Color;
+        }
+
         /// <summary>
         /// initializes the paper rectangle with data from XmlReader
         /// </summary>
@@ -302,6 +322,18 @@ namespace ShapesLibrary
         public override string ToString()
         {
             return "[Film" + base.ToString() + "]";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj) && obj is FilmRectangle)
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return 17 * base.GetHashCode();
         }
 
         /// <summary>

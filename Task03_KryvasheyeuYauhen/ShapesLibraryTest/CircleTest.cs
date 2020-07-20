@@ -174,5 +174,6 @@ namespace ShapesLibraryTest
             Assert.AreEqual(circle1, new FilmCircle(10));
             Assert.AreEqual(circle2, new PaperCircle(200));
         }
+
     }
 }

@@ -84,12 +84,20 @@ namespace ShapesLibrary
 
         public override bool Equals(object obj)
         {
-            return obj.ToString() == this.ToString();
+            if (obj is Circle && obj != null)
+            {
+                Circle temp = (Circle)obj;
+                if (temp.Radius == this.Radius)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
         }
 
         public override int GetHashCode()
         {
-            return this.ToString().GetHashCode();
+            return Radius.GetHashCode();
         }
 
         /// <summary>
@@ -197,6 +205,17 @@ namespace ShapesLibrary
             return "[Paper" + base.ToString() + string.Format("; Color = {0}]", Color);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj) && obj is PaperCircle && ((PaperCircle)obj).Color == this.Color)
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return (base.GetHashCode() << 2) ^ (int)Color;
+        }
         /// <summary>
         /// initializes the paper circle with data from XmlReader
         /// </summary>
@@ -285,6 +304,18 @@ namespace ShapesLibrary
         public override string ToString()
         {
             return "[Film" + base.ToString() + "]";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj) && obj is FilmCircle)
+                return true;
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return 17 * base.GetHashCode();
         }
 
         /// <summary>
