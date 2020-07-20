@@ -1,11 +1,6 @@
 ﻿using ShapesLibrary;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace BoxLibrary
@@ -32,7 +27,7 @@ namespace BoxLibrary
             foreach (Shape shape in _shapes)
                 if (shape != null)
                     counter++;
-            return counter;
+            return counter;           
         }
         /// <summary>
         /// Adds a shape in the box

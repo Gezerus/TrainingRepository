@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace ShapesLibrary
@@ -30,7 +26,7 @@ namespace ShapesLibrary
         protected Circle(double radius) 
         {
             if (radius <= 0)
-                throw new ArgumentOutOfRangeException("The radius should be greater than zero");
+                throw new ArgumentException("The radius should be greater than zero");
             _radius = radius;
         }
 
