@@ -30,7 +30,7 @@ namespace MyStore
         {
 
             if (p1.Type != p2.Type)
-                throw new ArgumentOutOfRangeException("Products should be of the same type");
+                throw new ArgumentException("Products should be of the same type");
 
             string name = p1.Name + " - " + p2.Name;
 
