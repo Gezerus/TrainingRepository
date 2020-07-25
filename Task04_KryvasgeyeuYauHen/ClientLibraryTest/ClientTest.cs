@@ -7,6 +7,7 @@ using ServerLibrary;
 
 namespace ClientLibraryTest
 {
+    //The tests contain Thread.Sleep.This is necessary to correctly model the server-client connection.
     [TestClass]
     public class ClientTest
     {
