@@ -66,6 +66,12 @@ namespace MathObjects
 
         }
 
+        /// <summary>
+        /// adds two polynomials
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns>addition result</returns>
         public static Polynomial operator + (Polynomial p1, Polynomial p2)
         {
             double[] result;
@@ -97,6 +103,12 @@ namespace MathObjects
             return new Polynomial(result);
         }
 
+        /// <summary>
+        /// subtracts polynomials
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
         public static Polynomial operator - (Polynomial p1, Polynomial p2)
         {
             double[] result;
@@ -128,6 +140,12 @@ namespace MathObjects
             return new Polynomial(result);
         }
 
+        /// <summary>
+        /// multiplies polynomials
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
         public static Polynomial operator * (Polynomial p1, Polynomial p2)
         {
             var result = new double[p1._coefficients.Length + p2._coefficients.Length - 1];
@@ -138,6 +156,12 @@ namespace MathObjects
             return new Polynomial(result);
         }
 
+        /// <summary>
+        /// multiplies a polynomial by a number
+        /// </summary>
+        /// <param name="polynomial"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public static Polynomial operator * (Polynomial polynomial, double number)
         {
             var result = polynomial._coefficients.Select(coefficient => coefficient * number).ToArray();

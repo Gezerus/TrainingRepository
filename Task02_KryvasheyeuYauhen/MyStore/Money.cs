@@ -51,17 +51,28 @@ namespace MyStore
             Rubles = money.Rubles;
             Coins = money.Coins;
         }
-
+        /// <summary>
+        /// Converts money to int
+        /// </summary>
+        /// <param name="money"></param>
         public static implicit operator int(Money money)
         {
             return money.Rubles * 100 + money.Coins;
         }
 
+        /// <summary>
+        /// Converts money to double
+        /// </summary>
+        /// <param name="price"></param>
         public static implicit operator double(Money price)
         {
             return (double)(int)price / 100;
         }
 
+        /// <summary>
+        /// Converts int to Money
+        /// </summary>
+        /// <param name="intPrice"></param>
         public static implicit operator Money(int intPrice)
         {
             int rubles = intPrice / 100;
@@ -70,6 +81,10 @@ namespace MyStore
             return new Money(rubles, coins);
         }
 
+        /// <summary>
+        /// Converts double to money
+        /// </summary>
+        /// <param name="doublePrice"></param>
         public static explicit operator Money(double doublePrice)
         {
             int rubles = (int)doublePrice;
@@ -78,6 +93,12 @@ namespace MyStore
             return new Money(rubles, coins);
         }
 
+        /// <summary>
+        /// adds two money
+        /// </summary>
+        /// <param name="m1"></param>
+        /// <param name="m2"></param>
+        /// <returns>addition result</returns>
         public static Money operator + (Money m1, Money m2)
         {
             int rubles = m1.Rubles + m2.Rubles;
@@ -88,6 +109,24 @@ namespace MyStore
                 coins -= 100;
             }
             return new Money(rubles, coins);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Money && obj != null)
+            {
+                Money temp = (Money)obj;
+                if (temp._rubles == this._rubles && temp._coins == this._coins)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return (_rubles << 2) ^ _coins;
         }
     }
 }

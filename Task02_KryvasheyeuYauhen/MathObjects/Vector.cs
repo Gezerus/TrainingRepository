@@ -65,6 +65,12 @@ namespace MathObjects
             return !v1.Equals(v2);
         }
 
+        /// <summary>
+        /// adds two vectors
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
         public static Vector operator + (Vector v1, Vector v2)
         {
             double x = v1.X + v2.X;
@@ -74,6 +80,12 @@ namespace MathObjects
             return new Vector(x, y, z);
         }
 
+        /// <summary>
+        /// subtracts vectors
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
         public static Vector operator - (Vector v1, Vector v2)
         {
             double x = v1.X - v2.X;
@@ -83,6 +95,12 @@ namespace MathObjects
             return new Vector(x, y, z);
         }
 
+        /// <summary>
+        /// multiplies vectors
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
         public static Vector operator * (Vector v1, Vector v2)
         {
             double x = (v1.Y * v2.Z) - (v1.Z * v2.Y);
@@ -92,6 +110,12 @@ namespace MathObjects
             return new Vector(x, y, z);
         }
 
+        /// <summary>
+        /// multiplies a vector by a number
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public static Vector operator * (Vector vector, double number)
         {
             return new Vector(number * vector.X, number * vector.Y, number * vector.Z);
@@ -102,6 +126,12 @@ namespace MathObjects
             return vector * number;
         }
 
+        /// <summary>
+        /// divides a vector by a number
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public static Vector operator / (Vector vector, double number)
         {
             return vector * (1 / number);
