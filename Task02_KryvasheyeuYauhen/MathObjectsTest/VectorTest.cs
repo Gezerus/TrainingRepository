@@ -7,6 +7,9 @@ namespace MathObjectsTest
     [TestClass]
     public class VectorTest
     {
+        /// <summary>
+        /// Tests property Length
+        /// </summary>
         [TestMethod]
         public void PropertyLength_ShouldReturnCorrectLength()
         {
@@ -16,6 +19,9 @@ namespace MathObjectsTest
             Assert.AreEqual(vector.Length, 7.0710678118654755);
         }
 
+        /// <summary>
+        /// Tests method ToString
+        /// </summary>
         [TestMethod]
         public void ToString_ShouldReturnCorrectString()
         {
@@ -25,6 +31,9 @@ namespace MathObjectsTest
             Assert.AreEqual(vector.ToString(), "[10,5; 5,5; 3]");
         }
 
+        /// <summary>
+        /// Tests method Equals when given equal vectors 
+        /// </summary>
         [TestMethod]
         public void Equals_WhenEqualМectorsProvided_ShouldReturnTrue()
         {
@@ -35,6 +44,9 @@ namespace MathObjectsTest
             Assert.AreEqual(vector1.Equals(vector2), true);
         }
 
+        /// <summary>
+        /// Tests method Equals when given unequal vectors 
+        /// </summary>
         [TestMethod]
         public void Equals_WhenUnequalМectorsProvided_ShouldReturnfalse()
         {
@@ -45,6 +57,9 @@ namespace MathObjectsTest
             Assert.AreEqual(vector1.Equals(vector2), false);
         }
 
+        /// <summary>
+        /// Tests addition of vectors
+        /// </summary>
         [TestMethod]
         public void VectorAddition_ShouldAddVectorsCorrectly()
         {
@@ -57,6 +72,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result, new Vector(20, 6, 11));
         }
 
+        /// <summary>
+        /// Tests subtraction of vectors
+        /// </summary>
         [TestMethod]
         public void VectorSubtraction_ShouldSubtractVectorsCorrectly()
         {
@@ -69,6 +87,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result, new Vector(-5, 3, 1));
         }
 
+        /// <summary>
+        /// Tests multiplication of vectors
+        /// </summary>
         [TestMethod]
         public void VectorMultiplication_ShouldMultiplyVectorsCorrectly()
         {
@@ -81,6 +102,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result, new Vector(9, 25, -30));
         }
 
+        /// <summary>
+        /// Tests multiplication vector by number
+        /// </summary>
         [TestMethod]
         public void MultiplyVectorByNumber_ShouldMultiplyCorrectly()
         {
@@ -94,6 +118,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result2, new Vector(10, 6, 8));
         }
 
+        /// <summary>
+        /// Tests Division vector by number
+        /// </summary>
         [TestMethod]
         public void DivisionVectorByNumber_ShouldDivideCorrectly()
         {
@@ -105,6 +132,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result, new Vector(2.5, 1.5, 2));
         }
 
+        /// <summary>
+        /// Tests method ScalarMultiply
+        /// </summary>
         [TestMethod]
         public void ScalarMultiply_ShoulfMultiplyVectorsCorrectly()
         {

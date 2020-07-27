@@ -7,12 +7,15 @@ namespace MathObjectsTest
     [TestClass]
     public class PolynomialTest
     {
-        [TestMethod]
+        /// <summary>
+        /// tests method ToString
+        /// </summary>
+        [TestMethod]        
         public void ToString_ShouldReturnCorrectString()
         {
             //arrange
             var polynomial1 = new Polynomial(1, 2, 3, 4, 5);
-            var polynomial2 = new Polynomial(1, 0, 0, 0, 0);
+            var polynomial2 = new Polynomial(1, 0, 0, 0, 0); 
             var polynomial3 = new Polynomial(1);
             var polynomial4 = new Polynomial(0, 0, 0, 0, 5);
             var polynomial5 = new Polynomial(0, 0, 0, 0, 0);
@@ -23,7 +26,9 @@ namespace MathObjectsTest
             Assert.AreEqual(polynomial4.ToString(), "[5x^4 + 0x^3 + 0x^2 + 0x^1 + 0x^0]");
             Assert.AreEqual(polynomial5.ToString(), "[0x^0]");
         }
-
+        /// <summary>
+        /// Tests method Equals whem given equals polynomials
+        /// </summary>
         [TestMethod]
         public void Equals_WhenEqualPolynomialsProvided_ShouldReturnTrue()
         {
@@ -34,6 +39,9 @@ namespace MathObjectsTest
             Assert.AreEqual(polynomial1.Equals(polynomial2), true);
         }
 
+        /// <summary>
+        /// Tests method Equals when given unequal polynomials 
+        /// </summary>
         [TestMethod]
         public void Equals_WhenUnequalPolynomialsProvided_ShouldReturnfalse()
         {
@@ -44,7 +52,11 @@ namespace MathObjectsTest
             Assert.AreEqual(polynomial1.Equals(polynomial2), false);
         }
 
+        /// <summary>
+        /// Tests addition of polynomials
+        /// </summary>
         [TestMethod]
+
         public void PolynomialAddition_ShouldAddPolynomialsCorrectly()
         {
             //arrange
@@ -60,6 +72,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result2, new Polynomial(8, 5, 9));
         }
 
+        /// <summary>
+        /// Tests subctraction of polynomials
+        /// </summary>
         [TestMethod]
         public void PolynomialSubtraction_ShouldSubtractPolynomialsCorrectly()
         {
@@ -77,6 +92,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result3, new Polynomial(1, 0, -3));
         }
 
+        /// <summary>
+        /// Tests multiplication of polynomials
+        /// </summary>
         [TestMethod]
         public void PolynomialMultiplication_ShouldMultiplyPolynomialsCorrectly()
         {
@@ -89,6 +107,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result, new Polynomial(8, 16, 22, 8));
         }
 
+        /// <summary>
+        /// Testd multiplication a polynomial by number
+        /// </summary>
         [TestMethod]
         public void MultiplyPolinomialByNumber_ShouldMultiplyCorrectly()
         {
@@ -102,6 +123,9 @@ namespace MathObjectsTest
             Assert.AreEqual(result2, new Polynomial(10, 6, 8));
         }
 
+        /// <summary>
+        /// Tests method DivisionWithRemainder when dividend is greater than devisor
+        /// </summary>
         [TestMethod]
         public void DivisionWithRemainder_WhenCorrectPolynomialProvided_ShouldCalculeteCorrectly()
         {
@@ -116,6 +140,9 @@ namespace MathObjectsTest
             Assert.AreEqual(remainder, new Polynomial(-3, -5));
         }
 
+        /// <summary>
+        /// Tests method DivisionWithRemainder when devisor is greater than devisor dividend
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void DivisionWithRemainder_WhenDividerGreaterThanDividendProvided_ShouldThrowExeption()
@@ -128,6 +155,9 @@ namespace MathObjectsTest
             var result = Polynomial.DivisionWithRemainder(polynomial1, polynomial2, out remainder);
         }
 
+        /// <summary>
+        /// Tests method DivisionWithRemainder when devisor is zero
+        /// </summary>
         [TestMethod]
         [ExpectedException(typeof(DivideByZeroException))]
         public void DivisionWithRemainder_WhenDividerIsZeroProvided_ShouldThrowExeption()
