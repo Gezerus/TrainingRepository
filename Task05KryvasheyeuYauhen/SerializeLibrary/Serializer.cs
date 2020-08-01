@@ -1,17 +1,11 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace SerializeLibrary
 {
@@ -23,17 +17,17 @@ namespace SerializeLibrary
     public class Serializer<T>  where T : ISerialize
     {
         private T _data;
-
+        // number of fiedls of class T
         private int _fieldsCount;
-
+        // names of fields of class T
         private string[] _fildNames;
-
+        // types of fields of class T
         private string[] _fildTypes;
 
         /// <summary>
         /// constructor without parameters for serialization
         /// </summary>
-        public Serializer()
+        private Serializer()
         {
 
         }
@@ -45,7 +39,9 @@ namespace SerializeLibrary
         public Serializer(T data)
         {
             _data = data;
+
             var fields = _data.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic);
+            // get number of fields, name of fields and type of fields of class T
             _fieldsCount = fields.Length;
             _fildNames = new string[_fieldsCount];
             _fildTypes = new string[_fieldsCount];
@@ -57,7 +53,10 @@ namespace SerializeLibrary
             }
 
         }
-
+        /// <summary>
+        /// Serializes the class that was used during initialization the Serializer to a binary file
+        /// </summary>
+        /// <param name="path"></param>
         public void BinarySerialize(string path)
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -66,7 +65,11 @@ namespace SerializeLibrary
                 formatter.Serialize(fStream, this);
             }
         }
-
+        /// <summary>
+        /// Deserializes class type T from a binary file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>result of deserialization</returns>
         public static T BinaryDeserialize(string path)
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -90,7 +93,11 @@ namespace SerializeLibrary
                 }
             }
         }
-
+        /// <summary>
+        /// Serializes a collection of class type T to a binary file
+        /// </summary>
+        /// <param name="dataCollection"></param>
+        /// <param name="path"></param>
         public static void BinaryCollectionSerialize(ICollection<T> dataCollection, string path)
         {
             var serializators = new List<Serializer<T>>();
@@ -105,7 +112,11 @@ namespace SerializeLibrary
                 formater.Serialize(fStream, serializators);
             }
         }
-
+        /// <summary>
+        /// Deserializes a collection of class type T from a binary file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static ICollection<T> BinaryCollectionDeserialize(string path)
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -140,6 +151,10 @@ namespace SerializeLibrary
             }
         }
 
+        /// <summary>
+        /// Serializes the class that was used during initialization the Serializer to a json file
+        /// </summary>
+        /// <param name="path"></param>
         public void JsonSerialize(string path)
         {
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Serializer<T>));
@@ -149,7 +164,11 @@ namespace SerializeLibrary
             }
 
         }
-
+        /// <summary>
+        /// Deserializes class type T from a json file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>deserialization result</returns>
         public static T JsonDeserialize(string path)
         {
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Serializer<T>));
@@ -174,6 +193,11 @@ namespace SerializeLibrary
             }
         }
 
+        /// <summary>
+        /// Serializes a collection of class type T to a json file
+        /// </summary>
+        /// <param name="dataCollection"></param>
+        /// <param name="path"></param>
         public static void JsonCollectionSerialize(ICollection<T> dataCollection, string path)
         {
             var serializators = new List<Serializer<T>>();
@@ -189,6 +213,11 @@ namespace SerializeLibrary
             }
         }
 
+        /// <summary>
+        /// Deserializes a collection of class type T from a json file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>deserialization result</returns>
         public static ICollection<T> JsonCollectionDeserialize(string path)
         {
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<Serializer<T>>));
@@ -223,6 +252,10 @@ namespace SerializeLibrary
             }
         }
 
+        /// <summary>
+        /// Serializes the class that was used during initialization the Serializer to a xml file
+        /// </summary>
+        /// <param name="path"></param>
         public void XmlSerialize(string path)
         {
             DataContractSerializer serializer = new DataContractSerializer(typeof(Serializer<T>));
@@ -232,6 +265,11 @@ namespace SerializeLibrary
             }
         }
 
+        /// <summary>
+        /// Deserializes class type T from a xml file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>deserialization result</returns>
         public static T XmlDeserialize(string path)
         {
             DataContractSerializer serializer = new DataContractSerializer(typeof(Serializer<T>));
@@ -257,6 +295,11 @@ namespace SerializeLibrary
             }
         }
 
+        /// <summary>
+        /// Serializes a collection of class type T to a xml file
+        /// </summary>
+        /// <param name="dataCollection"></param>
+        /// <param name="path"></param>
         public static void XmlCollectionSerialize(ICollection<T> dataCollection, string path)
         {
             var serializators = new List<Serializer<T>>();
@@ -272,6 +315,11 @@ namespace SerializeLibrary
             }
         }
 
+        /// <summary>
+        /// Deserializes a collection of class type T from a xml file.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>deserialization result</returns>
         public static ICollection<T> XmlCollectionDeserialize(string path)
         {
             DataContractSerializer serializer = new DataContractSerializer(typeof(List<Serializer<T>>));
@@ -306,16 +354,40 @@ namespace SerializeLibrary
 
             }
         }
+
+        /// <summary>
+        /// checks the version of the class and throws an exception if the version is wrong
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <param name="serializationResult"></param>
         private static void ClassVersionCheck(FieldInfo[] fields, Serializer<T> serializationResult)
         {
             if (fields.Length != serializationResult._fieldsCount)
                 throw new SerializationException("number of fields does not match");
+
+            bool flagName = false;
+            bool flagType = false;
+
             for (int i = 0; i < serializationResult._fieldsCount; i++)
             {
-                if (fields[i].Name != serializationResult._fildNames[i])
-                    throw new SerializationException("name of field does not match");
-                if (fields[i].FieldType.ToString() != serializationResult._fildTypes[i])
+                for(int j = 0; j < fields.Length; j++)
+                {
+                    if(fields[j].Name == serializationResult._fildNames[i])
+                    {
+                        flagName = true;
+                        if (fields[j].FieldType.ToString() == serializationResult._fildTypes[i])
+                            flagType = true;
+                    }
+                        
+                }
+                if (flagName == false)                
+                    throw new SerializationException("name of field does not match");                    
+                
+                if (flagType == false)
                     throw new SerializationException("type of field does not match");
+
+                flagName = false;
+                flagType = false;
             }
         }
     }
