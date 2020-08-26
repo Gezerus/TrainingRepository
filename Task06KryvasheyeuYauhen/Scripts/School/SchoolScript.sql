@@ -9,7 +9,7 @@ Id INT NOT NULL PRIMARY KEY IDENTITY,
 Name NVARCHAR(30) NOT NULL
 )
 
-GO
+
 
 CREATE TABLE Students
 (
@@ -33,7 +33,7 @@ Id INT NOT NULL PRIMARY KEY IDENTITY,
 Name NVARCHAR(50) NOT NULL UNIQUE
 )
 
-GO
+
 
 CREATE TABLE Exams
 (
@@ -43,7 +43,7 @@ SessionId INT NOT NULL REFERENCES Sessions(Id),
 Date DATE NOT NULL
 )
 
-GO
+
 
 CREATE TABLE StudentsExams
 (
@@ -61,7 +61,7 @@ SessionId INT NOT NULL REFERENCES Sessions(Id),
 Date DATE NOT NULL
 )
 
-GO
+
 
 CREATE TABLE StudentsCredits
 (
@@ -75,7 +75,7 @@ INSERT Groups
 VALUES
 ('TM'), ('PT'), ('PE'), ('MT')
 
-GO
+
 
 INSERT INTO Students
 VALUES
@@ -108,7 +108,7 @@ VALUES
 ('Winter session', '2016-01-03'),
 ('Summer session', '2016-06-01')
 
-GO
+
 
 INSERT INTO Credits
 VALUES
@@ -140,7 +140,7 @@ VALUES
 --Group 4
 (2, 3, '2016-06-10'), (3, 3, '2016-06-15')
 
-GO
+
 
 INSERT INTO StudentsCredits
 VALUES

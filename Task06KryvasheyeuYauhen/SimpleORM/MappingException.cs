@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SimpleORM
 {
-    class ORMModel
+    public class MappingException : Exception
     {
+        public MappingException(string message) : base(message)
+        {
+
+        }
     }
 }
