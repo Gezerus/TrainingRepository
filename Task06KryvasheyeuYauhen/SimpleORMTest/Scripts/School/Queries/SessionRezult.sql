@@ -13,5 +13,5 @@ JOIN Exams ON Exams.Id = StudentsExams.ExamId
 JOIN Students ON Students.Id = StudentsExams.StudentId
 JOIN Groups ON Groups.Id = Students.GroupId
 JOIN Sessions ON Sessions.Id = Exams.SessionId 
-WHERE Sessions.Id = 1
+WHERE Sessions.Id = 2
 GROUP BY Groups.Name

@@ -5,28 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleORMTest
+namespace School
 {
-    [Table(Name="Persons")]
-    class Person
+    [Table(Name ="Students")]
+    public class Student
     {
         [Column(IsDbGenerated =true, IsPrimaryKey =true)]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public int Age { get; set; }
+        public DateTime Birthday { get; set; }
 
+        public Gender Gender { get; set; }
 
-        public bool Gender { get; set; }
-
-        public Nationality Nationality { get; set; }
+        public int GroupId { get; set; }
     }
 
-    enum Nationality
+    public enum Gender
     {
-        Russian,
-        American,
-        Pole
+        woman,
+        man
     }
 }

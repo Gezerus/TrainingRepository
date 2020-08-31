@@ -4,14 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassLibrary1
+namespace School.Repository
 {
-    public class Class1
+    public class ExamRepository : Repository<Exam>
     {
-        enum Gender
-        {
-            man,
-            woman
-        };
     }
 }
