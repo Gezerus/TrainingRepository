@@ -37,7 +37,7 @@
       <HintPath>..\packages\EPPlus.5.3.0\lib\net45\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.SqlClient, Version=2.0.20168.4, Culture=neutral, PublicKeyToken=23ec7fc2d6eaa4a5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.SqlClient.2.0.0\lib\net46\Microsoft.Data.SqlClient.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Data.SqlClient.2.0.1\lib\net46\Microsoft.Data.SqlClient.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Data.Tools.Sql.BatchParser, Version=16.200.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.SqlServer.SqlManagementObjects.161.41011.9\lib\net462\Microsoft.Data.Tools.Sql.BatchParser.dll</HintPath>
@@ -201,11 +201,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.2.0.0\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.2.0.0\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />
+  <Import Project="..\packages\Microsoft.Data.SqlClient.SNI.2.0.1\build\net46\Microsoft.Data.SqlClient.SNI.targets" Condition="Exists('..\packages\Microsoft.Data.SqlClient.SNI.2.0.1\build\net46\Microsoft.Data.SqlClient.SNI.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Data.SqlClient.SNI.2.0.0\build\net46\Microsoft.Data.SqlClient.SNI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Data.SqlClient.SNI.2.0.0\build\net46\Microsoft.Data.SqlClient.SNI.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Data.SqlClient.SNI.2.0.1\build\net46\Microsoft.Data.SqlClient.SNI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Data.SqlClient.SNI.2.0.1\build\net46\Microsoft.Data.SqlClient.SNI.targets'))" />
   </Target>
 </Project>
