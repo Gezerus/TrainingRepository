@@ -4,16 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace School
 {
     /// <summary>
     /// writer reports from school database to xlsx
     /// </summary>
-    public static class XlsxReporWriter
+    public static class XlsxReportWriter
     {
         /// <summary>
         /// writes report of students subject to expulsion  to xlsx
@@ -24,7 +21,7 @@ namespace School
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             if (reports.Count() < 1)
-                throw new Exception("report is empty");
+                throw new ArgumentException("report is empty");
 
             using(ExcelPackage excelPackage = new ExcelPackage())
             {
@@ -58,7 +55,7 @@ namespace School
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             if (reports.Count() < 1)
-                throw new Exception("report is empty");
+                throw new ArgumentException("report is empty");
 
             using (ExcelPackage excelPackage = new ExcelPackage())
             {

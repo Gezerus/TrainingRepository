@@ -20,6 +20,7 @@ namespace SimpleORM
 
         private OrmDataContext(string connectionString)
         {
+            
             _connection = new SqlConnection(connectionString);
         }
 

@@ -177,16 +177,7 @@
     <Compile Include="ReportGenerator.cs" />
     <Compile Include="Reports\GroupResulrReport.cs" />
     <Compile Include="Reports\LosersReport.cs" />
-    <Compile Include="Repository\CreditRepository.cs" />
-    <Compile Include="Repository\ExamRepository.cs" />
-    <Compile Include="Repository\GroupRepository.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\Repository.cs" />
-    <Compile Include="Repository\SessionRepository.cs" />
-    <Compile Include="Repository\StudentCreditRepository.cs" />
-    <Compile Include="Repository\StudentExamRepository.cs" />
-    <Compile Include="Repository\StudentRepository.cs" />
-    <Compile Include="Repository\SubjectRepository.cs" />
+    <Compile Include="SchoolRepository.cs" />
     <Compile Include="ScriptRunner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Session.cs" />
@@ -194,7 +185,7 @@
     <Compile Include="Models\StudentCredit.cs" />
     <Compile Include="Models\StudentExam.cs" />
     <Compile Include="Models\Subject.cs" />
-    <Compile Include="XlsxReporWriter.cs" />
+    <Compile Include="XlsxReportWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -15,15 +15,13 @@ namespace School
     /// </summary>
     public static class ScriptRunner
     {
+        static string _sqlConnectionString = @"Data Source=(local);Initial Catalog=master;Integrated Security=True";
         /// <summary>
         /// runs the script to create the school database if it does not exist
         /// </summary>
-        public static void CreateSchoolDataBase()
+        public static void CreateSchoolDbIfNotExist()
         {
-
-
-            string sqlConnectionString = @"Data Source=(local);Initial Catalog=master;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(sqlConnectionString);
+            SqlConnection conn = new SqlConnection(_sqlConnectionString);
 
             Server server = new Server(new ServerConnection(conn));
 
@@ -40,6 +38,22 @@ namespace School
 
                 server.ConnectionContext.ExecuteNonQuery(script);
             }
+            conn.Close();
+        }
+
+        public static void DeleteSchoolDbIfExist()
+        {
+            SqlConnection conn = new SqlConnection(_sqlConnectionString);
+
+            Server server = new Server(new ServerConnection(conn));
+
+            string chekString = "IF DB_ID ('School') IS NULL " +
+                "SELECT 1 " +
+                "ELSE " +
+                "SELECT 0";
+
+            if((int)server.ConnectionContext.ExecuteScalar(chekString) == 0)
+                server.ConnectionContext.ExecuteNonQuery("DROP DATABASE School");
             conn.Close();
         }
     }

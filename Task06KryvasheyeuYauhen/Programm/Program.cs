@@ -1,9 +1,5 @@
 ﻿using School;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Programm
 {
@@ -11,18 +7,18 @@ namespace Programm
     {
         static void Main(string[] args)
         {
-            ScriptRunner.CreateSchoolDataBase();
+            ScriptRunner.CreateSchoolDbIfNotExist();
 
             var reportGenerator = new ReportGenerator();
 
             var sessionResultreport = reportGenerator.SessinResultGenerate(r => r.GroupId);
 
-            XlsxReporWriter.SessionREsultReportWrite(sessionResultreport, string.Format(@"..\..\Reports\SessionResultReports\{0}-{1}.xlsx",
+            XlsxReportWriter.SessionREsultReportWrite(sessionResultreport, string.Format(@"..\..\Reports\SessionResultReports\{0}-{1}.xlsx",
                 DateTime.Now.DayOfYear, (int)DateTime.Now.TimeOfDay.TotalSeconds));
 
             var loserReport = reportGenerator.LosersReportGenerate(r => r.Name);
 
-            XlsxReporWriter.LosersReportWrite(loserReport, string.Format(@"..\..\Reports\LosersReports\{0}-{1}.xlsx",
+            XlsxReportWriter.LosersReportWrite(loserReport, string.Format(@"..\..\Reports\LosersReports\{0}-{1}.xlsx",
                 DateTime.Now.DayOfYear, (int)DateTime.Now.TimeOfDay.TotalSeconds));
         }
     }
