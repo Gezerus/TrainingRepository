@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Data.SqlClient;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
+using System.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimpleORM;
 
@@ -11,30 +9,33 @@ namespace SimpleORMTest
     [TestClass]
     public class OrmDataContextTest
     {
-        private string _connectionString = "Data Source=(local);Initial Catalog = TestDB; Integrated Security = True";
-        private Server CreateTestDB()
+        static string _testConString = "Server = localhost; Integrated Security = SSPI; database=TestDB";
+        static string _masterConString = "Server=localhost;Integrated Security=SSPI; database=master";
+       
+        private void CreateTestDB()
         {
-            string sqlConnectionString = @"Data Source=(local);Initial Catalog=master;Integrated Security=True";
 
-            string createScript = "CREATE DATABASE TestDB;";
-            string tableCreateScript = "USE TestDB CREATE TABLE Persons (Id INT PRIMARY KEY IDENTITY, Name NVARCHAR(30), Age INT, Nationality INT, Gender BIT)";
-            string insertScript = "USE TestDB INSERT INTO Persons VALUES ('Brad', 15, 0, 1), ('Nicole', 25, 1, 0), ('Vera', 35, 2, 0)";
-            SqlConnection conn = new SqlConnection(sqlConnectionString);
-
-            Server server = new Server(new ServerConnection(conn));
-            server.ConnectionContext.ExecuteNonQuery(createScript);
-            server.ConnectionContext.ExecuteNonQuery(tableCreateScript);
-            server.ConnectionContext.ExecuteNonQuery(insertScript);
+            SqlConnection conn = new SqlConnection(_masterConString);            
+            SqlCommand command = new SqlCommand("CREATE DATABASE TestDB", conn);
+            conn.Open();
+            command.ExecuteNonQuery();
             conn.Close();
-            return server;
+            conn.ConnectionString = _testConString;
+            command.CommandText = "USE TestDB CREATE TABLE Persons (Id INT PRIMARY KEY IDENTITY, Name NVARCHAR(30), Age INT, Nationality INT, Gender BIT) " +
+            "USE TestDB INSERT INTO Persons VALUES ('Brad', 15, 0, 1), ('Nicole', 25, 1, 0), ('Vera', 35, 2, 0)";                       
+            conn.Open();
+            command.ExecuteNonQuery();
+            conn.Close();
+
         }
 
         private void DeleteTestDB()
-        {
-            string sqlConnectionString = @"Data Source=(local);Initial Catalog=master;Integrated Security=True";
-            SqlConnection conn = new SqlConnection(sqlConnectionString);
-            Server server = new Server(new ServerConnection(conn));
-            server.ConnectionContext.ExecuteNonQuery("ALTER DATABASE TestDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE TestDB");
+        {            
+            SqlConnection conn = new SqlConnection(_masterConString);
+            SqlCommand command = new SqlCommand("ALTER DATABASE TestDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE TestDB", conn);
+            conn.Open();
+            command.ExecuteNonQuery();
+            conn.Close();
         }
 
         /// <summary>
@@ -50,8 +51,8 @@ namespace SimpleORMTest
                 new Person  {Id = 2, Name = "Nicole", Age = 25, Gender = false, Nationality = Nationality.American },
                 new Person  {Id = 3, Name = "Vera", Age = 35, Gender = false, Nationality = Nationality.Pole }
             };
-           
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+
+            var dbContext = OrmDataContext.Initialize(_testConString);
             try
             {
                 CreateTestDB();
@@ -79,23 +80,22 @@ namespace SimpleORMTest
         [TestMethod]
         public void Query_WhenQueryResultHasNoData_ShouldReturnEmptyPersonsCollection()
         {
-         // Arrange
-         string sqlConnectionString = @"Data Source=(local);Initial Catalog=master;Integrated Security=True";
+            // Arrange 
+            string script = "USE TestDB CREATE TABLE Persons (Id INT PRIMARY KEY IDENTITY, Name NVARCHAR(30), Age INT, Nationality INT, Gender BIT)";
 
-         string createScript = "CREATE DATABASE TestDB;";
-         string tableCreateScript = "USE TestDB CREATE TABLE Persons (Id INT PRIMARY KEY IDENTITY, Name NVARCHAR(30), Age INT, Nationality INT, Gender BIT)";     
-
-         SqlConnection conn = new SqlConnection(sqlConnectionString);
-
-         Server server = new Server(new ServerConnection(conn));
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            SqlConnection conn = new SqlConnection(_masterConString);
+            SqlCommand command = new SqlCommand("CREATE DATABASE TestDB", conn);
+            var dbContext = OrmDataContext.Initialize(_testConString);
             try
             {
-                server.ConnectionContext.ExecuteNonQuery(createScript);
-                server.ConnectionContext.ExecuteNonQuery(tableCreateScript);
-                
+                conn.Open();
+                command.ExecuteNonQuery();
                 conn.Close();
-
+                conn.ConnectionString = _testConString;
+                command.CommandText = script;
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
                 // Act
                 var result = dbContext.Query<Person>("SELECT * FROM Persons");
                 // Assert
@@ -105,7 +105,7 @@ namespace SimpleORMTest
             finally
             {
                 dbContext.Dispose();
-                server.ConnectionContext.ExecuteNonQuery("ALTER DATABASE TestDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE TestDB");
+                DeleteTestDB();
             }
         }
 
@@ -117,7 +117,7 @@ namespace SimpleORMTest
         public void Query_WhenQueryResultHasIncorrectData_ShouldThrowMappingException()
         {
             // Arrange  
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
             try
             {
                 CreateTestDB();
@@ -127,7 +127,7 @@ namespace SimpleORMTest
             finally
             {
                 dbContext.Dispose();
-                DeleteTestDB();              
+                DeleteTestDB();
             }
         }
 
@@ -143,13 +143,13 @@ namespace SimpleORMTest
                 new Person () {Id = 2, Name = "Nicole", Age = 25, Gender = false, Nationality = Nationality.American },
                 new Person () {Id = 3, Name = "Vera", Age = 35, Gender = false, Nationality = Nationality.Pole }
             };
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
 
             try
             {
                 CreateTestDB();
                 // Act
-                var result = dbContext.Query<Person>("SELECT * FROM Persons WHERE Gender = @Gender", new { Gender = false});
+                var result = dbContext.Query<Person>("SELECT * FROM Persons WHERE Gender = @Gender", new { Gender = false });
                 // Assert
                 Assert.AreEqual(result.Count(), 2);
 
@@ -180,7 +180,7 @@ namespace SimpleORMTest
                 new Person () {Id = 3, Name = "Vera", Age = 35, Gender = false, Nationality = Nationality.Pole }
             };
 
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
 
             try
             {
@@ -210,15 +210,19 @@ namespace SimpleORMTest
         public void GetAll_WhenModeHasNoTableAttribute_Shouldmapcorrectly()
         {
             // Arrange
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
 
             try
             {
-                var server = CreateTestDB();
-                string tableCreateScript = "USE TestDB CREATE TABLE Cars (Id INT PRIMARY KEY IDENTITY, Model NVARCHAR(30))";
-                string insertScript = "USE TestDB INSERT INTO Persons VALUES ('Brad', 15, 0, 1), ('Nicole', 25, 1, 0), ('Vera', 35, 2, 0)";
-                server.ConnectionContext.ExecuteNonQuery(tableCreateScript);
-                server.ConnectionContext.ExecuteNonQuery(insertScript);
+                CreateTestDB();
+                var script = "USE TestDB CREATE TABLE Cars (Id INT PRIMARY KEY IDENTITY, Model NVARCHAR(30)) " +
+                "INSERT INTO Persons VALUES ('Brad', 15, 0, 1), ('Nicole', 25, 1, 0), ('Vera', 35, 2, 0)";
+
+                SqlConnection conn = new SqlConnection(_testConString);
+                SqlCommand command = new SqlCommand(script, conn);
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
                 // Act
                 var result = dbContext.GetAll<Car>();
                 // Assert
@@ -245,13 +249,13 @@ namespace SimpleORMTest
                 new Person () {Id = 4, Name = "Fedor", Age = 45, Gender = true, Nationality = Nationality.Pole }
             };
 
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
 
             try
             {
                 CreateTestDB();
                 // Act
-                var number = dbContext.Execute("INSERT INTO Persons (Name, Age, Gender, Nationality) VALUES (@Name, @Age,  @Gender, @Nationality)", 
+                var number = dbContext.Execute("INSERT INTO Persons (Name, Age, Gender, Nationality) VALUES (@Name, @Age,  @Gender, @Nationality)",
                     new { Name = "Fedor", Age = 45, Gender = true, Nationality = Nationality.Pole });
                 // Assert
                 var result = dbContext.GetAll<Person>();
@@ -279,7 +283,7 @@ namespace SimpleORMTest
         public void Exequte_WhenInCorrectParametersProvided_ShouldExequteInstructionCorrectly()
         {
             // Arrange
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
 
             try
             {
@@ -302,7 +306,7 @@ namespace SimpleORMTest
         public void Insert_WhenCorrectModelProvided_ShouldAddObjectToDataBase()
         {
             // Arrange
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
 
             var person1 = new Person()
             { Name = "Bob", Age = 100, Gender = true, Nationality = Nationality.American };
@@ -337,14 +341,19 @@ namespace SimpleORMTest
         public void Insert_WhenInCorrectModelProvided_ShouldThrowException()
         {
             // Arrange
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
             try
             {
-                var server = CreateTestDB();
-                string tableCreateScript = "USE TestDB CREATE TABLE Cars (Id INT PRIMARY KEY IDENTITY, Model NVARCHAR(30))";
-                string insertScript = "USE TestDB INSERT INTO Cars VALUES ('BMV'), ('LADA')";
-                server.ConnectionContext.ExecuteNonQuery(tableCreateScript);
-                server.ConnectionContext.ExecuteNonQuery(insertScript);
+                CreateTestDB();
+                string script = "USE TestDB CREATE TABLE Cars (Id INT PRIMARY KEY IDENTITY, Model NVARCHAR(30)) " +
+                "USE TestDB INSERT INTO Cars VALUES ('BMV'), ('LADA')";
+
+                SqlConnection conn = new SqlConnection(_testConString);
+                SqlCommand command = new SqlCommand(script, conn);
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
+
                 var car = new Car() { Model = "AUDI" };
                 dbContext.Insert(car);
                 // Act
@@ -363,7 +372,7 @@ namespace SimpleORMTest
         public void Update_WhenCorrectModelProvided_ShouldUpdateObjectCorrectly()
         {
             // Arrange
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
 
             var person1 = new Person()
             { Name = "Bob", Age = 100, Gender = true, Nationality = Nationality.American };
@@ -373,7 +382,7 @@ namespace SimpleORMTest
                 dbContext.Insert(person1);
 
                 var person2 = new Person()
-                {Id = 4, Name = "Boby", Age = 50, Gender = true, Nationality = Nationality.American };
+                { Id = 4, Name = "Boby", Age = 50, Gender = true, Nationality = Nationality.American };
                 // Act
                 var number = dbContext.Update(person2);
                 // Assert
@@ -400,18 +409,23 @@ namespace SimpleORMTest
         public void Update_WhenModelDoesNotHavePrimaryKey_ShouldThrowException()
         {
             // Arrange
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
             try
             {
-                var server = CreateTestDB();
-                string tableCreateScript = "USE TestDB CREATE TABLE Footballer (Id INT PRIMARY KEY IDENTITY, Name NVARCHAR(30))";                
-                server.ConnectionContext.ExecuteNonQuery(tableCreateScript);
+                CreateTestDB();
+                string script = "USE TestDB CREATE TABLE Footballer (Id INT PRIMARY KEY IDENTITY, Name NVARCHAR(30))";
+
+                SqlConnection conn = new SqlConnection(_masterConString);
+                SqlCommand command = new SqlCommand(script, conn);
+                conn.Open();
+                command.ExecuteNonQuery();
+                conn.Close();
                 var foot1 = new Footballer()
                 { Name = "Messi" };
                 dbContext.Insert(foot1);
 
                 var foot2 = new Footballer()
-                { Id = 1, Name = "Ronaldo"};
+                { Id = 1, Name = "Ronaldo" };
                 // Act
                 var number = dbContext.Update(foot2);
 
@@ -430,7 +444,7 @@ namespace SimpleORMTest
         public void Delete_WhenCorrectModelProvided_ShouldDeleteeObjectCorrectly()
         {
             // Arrange
-            var dbContext = OrmDataContext.Initialize(_connectionString);
+            var dbContext = OrmDataContext.Initialize(_testConString);
             try
             {
                 CreateTestDB();

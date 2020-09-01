@@ -1,5 +1,5 @@
-CREATE DATABASE School
-GO
+--CREATE DATABASE School
+--GO
 USE School
 
 CREATE TABLE Groups
@@ -213,7 +213,7 @@ VALUES
 --Group 4
 (4, 3, '2016-06-01'), (5, 3, '2016-06-01')
 
-GO
+
 
 INSERT INTO StudentsExams
 VALUES

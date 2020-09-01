@@ -1,12 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.SqlServer.Management.Common;
-using Microsoft.SqlServer.Management.Smo;
-using System;
-using System.Collections.Generic;
+﻿using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace School
 {
@@ -15,46 +8,57 @@ namespace School
     /// </summary>
     public static class ScriptRunner
     {
-        static string _sqlConnectionString = @"Data Source=(local);Initial Catalog=master;Integrated Security=True";
+        static string _schoolConString = "Server = localhost; Integrated Security = SSPI; database=School";
+        static string _masterConString = "Server=localhost;Integrated Security=SSPI; database=master";
         /// <summary>
         /// runs the script to create the school database if it does not exist
         /// </summary>
         public static void CreateSchoolDbIfNotExist()
         {
-            SqlConnection conn = new SqlConnection(_sqlConnectionString);
-
-            Server server = new Server(new ServerConnection(conn));
+            SqlConnection conn = new SqlConnection(_masterConString);
 
             string chekString = "IF DB_ID ('School') IS NULL " +
                 "SELECT 1 " +
                 "ELSE " +
                 "SELECT 0";
+            SqlCommand sqlCommand = new SqlCommand(chekString, conn);
+            conn.Open();
 
-            if ((int)server.ConnectionContext.ExecuteScalar(chekString) == 1)
+            if((int)sqlCommand.ExecuteScalar() ==1)
             {
+                sqlCommand.CommandText = "CREATE DATABASE School";
+                sqlCommand.ExecuteNonQuery();
+                conn.Close();               
+                conn.ConnectionString = _schoolConString;
                 FileInfo file = new FileInfo(@"..\..\..\School\Scripts\SchoolScript.sql");
-
                 string script = file.OpenText().ReadToEnd();
+                conn.Open();
 
-                server.ConnectionContext.ExecuteNonQuery(script);
+                sqlCommand.CommandText = script;
+                sqlCommand.ExecuteNonQuery();
             }
             conn.Close();
         }
 
         public static void DeleteSchoolDbIfExist()
         {
-            SqlConnection conn = new SqlConnection(_sqlConnectionString);
-
-            Server server = new Server(new ServerConnection(conn));
-
+            SqlConnection conn = new SqlConnection(_masterConString);
             string chekString = "IF DB_ID ('School') IS NULL " +
                 "SELECT 1 " +
                 "ELSE " +
                 "SELECT 0";
 
-            if((int)server.ConnectionContext.ExecuteScalar(chekString) == 0)
-                server.ConnectionContext.ExecuteNonQuery("DROP DATABASE School");
+            SqlCommand sqlCommand = new SqlCommand(chekString, conn);
+            conn.Open();
+
+            if ((int)sqlCommand.ExecuteScalar() == 0)
+            {                
+                sqlCommand.CommandText = "DROP DATABASE School";
+                sqlCommand.ExecuteNonQuery();
+                sqlCommand.Connection.Close();
+            }
             conn.Close();
+            
         }
     }
 }
