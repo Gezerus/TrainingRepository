@@ -72,7 +72,7 @@ namespace SchoolTest
         /// Test method LoserReportGenerate when sorting is used. The method shoul get correct report from database
         /// </summary>
         [TestMethod]
-        public void LoserReportGenerate_ЦhenЫortingIsUsed_ShouldGetCorrectReportFromDatabase()
+        public void LoserReportGenerate_WhenSortingIsUsed_ShouldGetCorrectReportFromDatabase()
         {
             // Arrange
             ScriptRunner.DeleteSchoolDbIfExist();

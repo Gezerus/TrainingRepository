@@ -122,7 +122,8 @@ namespace SimpleORM
             var commandCreator = new ParameterSqlCommandCreator(sqlString, _connection, parameters);
             var command = commandCreator.Create();
 
-            _connection.Open();
+            if(_connection.State == ConnectionState.Closed)
+                _connection.Open();
             var result = command.ExecuteNonQuery();
             _connection.Close();
             return result;
@@ -162,8 +163,8 @@ namespace SimpleORM
                 commandCreator = new SqlCommandCreator(sqlString, _connection);
 
             var command = commandCreator.Create();
-
-            _connection.Open();
+            if (_connection.State == ConnectionState.Closed)
+                _connection.Open();
             SqlDataAdapter adapter = new SqlDataAdapter(command);            
             DataSet ds = new DataSet();
             adapter.Fill(ds);

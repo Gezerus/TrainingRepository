@@ -53,7 +53,7 @@ namespace School
 
             if ((int)sqlCommand.ExecuteScalar() == 0)
             {                
-                sqlCommand.CommandText = "DROP DATABASE School";
+                sqlCommand.CommandText = "ALTER DATABASE School SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE School";
                 sqlCommand.ExecuteNonQuery();
                 sqlCommand.Connection.Close();
             }

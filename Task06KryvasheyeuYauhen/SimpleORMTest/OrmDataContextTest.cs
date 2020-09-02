@@ -69,7 +69,6 @@ namespace SimpleORMTest
             }
             finally
             {
-                dbContext.Dispose();
                 DeleteTestDB();
             }
         }
@@ -103,8 +102,7 @@ namespace SimpleORMTest
 
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -125,8 +123,7 @@ namespace SimpleORMTest
                 var result = dbContext.Query<Person>("SELECT Name, Age FROM Persons");
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -160,8 +157,7 @@ namespace SimpleORMTest
                 }
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -197,8 +193,7 @@ namespace SimpleORMTest
                 }
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -228,8 +223,7 @@ namespace SimpleORMTest
                 // Assert
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -269,8 +263,7 @@ namespace SimpleORMTest
                 }
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -293,8 +286,7 @@ namespace SimpleORMTest
                     new { Name = "Fedor", Age = 45, Gender = true });
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -327,8 +319,7 @@ namespace SimpleORMTest
                 Assert.AreEqual(person1.Nationality, person2.Nationality);
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -359,8 +350,7 @@ namespace SimpleORMTest
                 // Act
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -395,8 +385,7 @@ namespace SimpleORMTest
                 Assert.AreEqual(person2.Nationality, person3.Nationality);
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -431,8 +420,7 @@ namespace SimpleORMTest
 
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
@@ -461,8 +449,7 @@ namespace SimpleORMTest
                 Assert.AreEqual(beforeCount, afterCount + 1);
             }
             finally
-            {
-                dbContext.Dispose();
+            {                
                 DeleteTestDB();
             }
         }
