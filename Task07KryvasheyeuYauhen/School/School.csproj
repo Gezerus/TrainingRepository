@@ -52,6 +52,10 @@
     <Compile Include="Models\StudentExam.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Teacher.cs" />
+    <Compile Include="ReportGenerator.cs" />
+    <Compile Include="Reports\SpecialtyAverageReport.cs" />
+    <Compile Include="Reports\TeacherAverageReport.cs" />
+    <Compile Include="Reports\AverageDynamicReport.cs" />
     <Compile Include="Repositories\CreditRepository.cs" />
     <Compile Include="Repositories\ExamRepository.cs" />
     <Compile Include="Repositories\GroupRepository.cs" />
