@@ -7,12 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace School.Repositories
-{    
+{
+    /// <summary>
+    /// describes the interaction with the sessions table
+    /// </summary>
     public class SessionRepository : Repository<Session>
     {
         public SessionRepository(DataContext dataContext) : base(dataContext)
         { }
 
+        /// <summary>
+        /// updates a session in the sessions table
+        /// </summary>
+        /// <param name="session"></param>
         public override void Update(Session session)
         {
             var newSession = GetById(session.Id);

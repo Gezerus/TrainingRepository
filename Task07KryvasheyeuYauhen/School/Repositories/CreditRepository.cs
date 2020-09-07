@@ -8,11 +8,18 @@ using System.Threading.Tasks;
 
 namespace School.Repositories
 {
+    /// <summary>
+    /// describes the interaction with the credits table
+    /// </summary>
     public class CreditRepository : Repository<Credit>
     {
         public CreditRepository(DataContext dataContext) : base(dataContext)
         { }
 
+        /// <summary>
+        /// updates a credit in the credits table
+        /// </summary>
+        /// <param name="credit"></param>
         public override void Update(Credit credit)
         {
             var newCredit = GetById(credit.Id);

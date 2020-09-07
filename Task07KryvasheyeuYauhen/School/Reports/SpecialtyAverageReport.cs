@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace School.Reports
 {
+    /// <summary>
+    /// report of average score in each specialty
+    /// </summary>
     public class SpecialtyAverageReport
     {
         public int SessionId { get; set; }
