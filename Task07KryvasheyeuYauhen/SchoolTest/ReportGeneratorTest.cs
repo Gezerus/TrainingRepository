@@ -1,13 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using School;
-using School.Models;
 using School.Reports;
-using School.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolTest
 {
@@ -226,38 +222,6 @@ namespace SchoolTest
                 Assert.AreEqual(Math.Round(report.Average, 2), syntheticReport[i++].Average);
             }
         }
-
-        /// <summary>
-        /// Test Method AverageDynamicReportGenerate. The method should return correct report from database
-        /// </summary>
-        [TestMethod]
-        public void AverageDynamicReportGenerate_WhenSortingIsUsed_ShouldReturnCorrectReport()
-        {
-            // Arrange
-            ScriptRunner.DeleteSchoolDbIfExist();
-            ScriptRunner.CreateSchoolDbIfNotExist();
-
-            var syntheticReport = new List<AverageDynamicReport>
-            {
-                new AverageDynamicReport { Year = 2015, SubjectName = "History", Average = 6.56},
-                new AverageDynamicReport { Year = 2015, SubjectName = "English", Average = 6.78},
-                new AverageDynamicReport { Year = 2015, SubjectName = "Physics", Average = 7.67},
-                new AverageDynamicReport { Year = 2015, SubjectName = "Maths", Average = 8},
-                new AverageDynamicReport { Year = 2015, SubjectName = "Sociology", Average = 9}
-            };
-
-            var generator = new ReportGenerator();
-            // Act
-            var result = generator.AverageDynamicReportGenerate(r => r.Average).FirstOrDefault();
-            // Assert
-            Assert.IsTrue(result != null);
-            int i = 0;
-            foreach (var report in result)
-            {
-                Assert.AreEqual(report.Year, syntheticReport[i].Year);
-                Assert.AreEqual(report.SubjectName, syntheticReport[i].SubjectName);
-                Assert.AreEqual(Math.Round(report.Average, 2), syntheticReport[i++].Average);
-            }
-        }
+        
     }
 }

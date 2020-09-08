@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Data.Linq;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using School;
 using School.Models;
 using School.Repositories;
-using System.Configuration;
 
 namespace SchoolTest
 {
